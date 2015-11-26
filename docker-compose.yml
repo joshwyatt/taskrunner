@@ -1,0 +1,14 @@
+creator:
+  build: ./creator
+  ports:
+   - 8000:8000
+  links:
+   - redis
+
+runner:
+  build: ./runner
+  links:
+   - redis
+
+redis:
+  image: redis
