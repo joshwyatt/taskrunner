@@ -1,6 +1,6 @@
 if (process.argv.length !== 5) printUsageAndExit();
 
-var Queue = require('./queue.js');
+var Queue = require('../classes/queue.js');
 var queueName = process.argv[2];
 var jobName = process.argv[3];
 var numberOfTasks = process.argv[4];
