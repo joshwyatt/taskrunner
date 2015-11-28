@@ -1,5 +1,7 @@
 notes
 dumb.rdb
+creator/dumb.rdb
+runner/dumb.rdb
 node_modules/
 creator/node_modules/
 runner/node_modules/

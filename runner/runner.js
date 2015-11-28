@@ -5,7 +5,7 @@ var redis = require('redis');
 var host = process.env.REDIS_PORT_6379_TCP_ADDR || 'localhost';
 var client = redis.createClient(6379, host);
 
-var Queue = require('../classes/queue.js');
+var Queue = require('./queue.js');
 var queue = new Queue(queueName, client);
 
 queue.runTasks();
