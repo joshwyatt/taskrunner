@@ -14,7 +14,12 @@ Queue.prototype.push = function (data) {
 Queue.prototype.createTasks = function (jobName, numberOfTasks) {
   
   for (var i = 0; i < Number(numberOfTasks); i++) {
-    this.push(jobName + ' - ' + i);
+    // this.push(jobName + ' - ' + i);
+    var task = {
+      name: jobName,
+      data: i
+    };
+    this.push(JSON.stringify(task));
   }
 
 };
