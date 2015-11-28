@@ -6,4 +6,4 @@ RUN npm install
 
 ADD . /code
 
-CMD ["node", "creator.js", "josh", "new", "100000"]
+CMD ["node", "creator.js"]
