@@ -38,18 +38,31 @@ Queue.prototype.runTasks = function () {
 
     var host = os.hostname();
     var time = Date.now();
-    var task = replies[1];
+    var rawTask = replies[1];
+    var task = JSON.parse(rawTask);
+    var taskName = task.name;
+    var taskData = task.data;
 
-    var doneKey = self.key + ':done';
-    var doneHostKey = self.key + ':' + host;
+    var doneKey = self.key + ':' + taskName + ':done';
+    var doneHostKey = self.key + ':' + taskName + ':' + host;
+    var resultsKey = self.key + ':' + taskName + ':results';
 
-    self.client.sadd(doneKey, task);
-    self.client.sadd(doneHostKey, task);
+    self.client.sadd(doneKey, rawTask);
+    self.client.sadd(doneHostKey, rawTask);
 
-    console.log('[OK]', task);
-    self.runTasks();
+    var taskResult = doubler(taskData);
+    self.client.sadd(resultsKey, taskResult, function (err, data) {
+      self.runTasks();
+    });
+
   });
 
+}
+
+function doubler (task) {
+  var result = task * 2;
+  console.log('completed task', task, 'with result', result);
+  return result;
 }
 
 module.exports = Queue;

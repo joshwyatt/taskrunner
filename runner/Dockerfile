@@ -6,4 +6,4 @@ RUN npm install
 
 ADD . /code
 
-CMD ["node", "runner.js", "josh"]
+CMD ["node", "runner.js", "jobs"]

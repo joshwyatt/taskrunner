@@ -30,9 +30,6 @@ function printUsageAndExit () {
 }
 
 function handler (req, res) {
-  // var jobName = req.params.job;
-  // var numberOfTasks = req.params.num;
-  // queue.createTasks(jobName, numberOfTasks);
   res.send('please see redis-cli for details');
 }
 
@@ -43,7 +40,12 @@ function postHandler (req, res) {
   var numberOfTasks = req.body.num;
 
   queue.createTasks(jobName, numberOfTasks);
-  res.send('post received');
+  console.log('queueName:', queueName);
+  console.log('jobName:', jobName);
+  console.log('numberOfTasks:', numberOfTasks);
+
+  res.send('post received\n');
+  // res.send('post received for', numberOfTasks, jobName, 'in job queue', queueName, '.\n');
 }
 
 function serverMessage () {
