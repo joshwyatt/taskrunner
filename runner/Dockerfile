@@ -6,4 +6,4 @@ RUN npm install
 
 ADD . /code
 
-ENTRYPOINT ["node", "runner.js"]
+CMD ["node", "runner.js", "jobs"]

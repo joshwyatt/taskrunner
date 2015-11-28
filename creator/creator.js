@@ -43,7 +43,7 @@ function postHandler (req, res) {
   var numberOfTasks = req.body.num;
 
   queue.createTasks(jobName, numberOfTasks);
-  res.send('post received');
+  res.send('post received for', numberOfTasks, jobName, 'in job queue', queueName, '.\n');
 }
 
 function serverMessage () {
