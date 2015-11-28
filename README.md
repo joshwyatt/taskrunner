@@ -2,7 +2,7 @@
 
 Distributed job queue with creator and runners components to be run with docker compose in conjunction with swarm if desired.
 
-This project is pre-alpha. Currently there is the tasks created and how they are run are hard-coded. Abstracting this out will be easy.
+This project is pre-alpha. Currently the tasks created and how they are run are both hard-coded. Abstracting this out will be easy.
 
 ## usage
 
