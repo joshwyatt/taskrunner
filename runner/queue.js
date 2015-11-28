@@ -1,59 +1,55 @@
 var os = require('os');
+var ticker = 1;
 
-function Queue (name, client) {
-  this.name = name;
-  this.key = 'queues:' + name;
+function Queue (key, client) {
+  this.key = key;
   this.client = client;
+  // 0 === no timeout. We're using `brpop` (blocking) and don't want this worker to stop during extended waits.
   this.timeout = 0;
 }
 
 
-Queue.prototype.printStatus = function () {
-  console.log('Name: ' + this.name + '\nKey: ' + this.key + '\nClient: ' + this.client);
+Queue.prototype.printInfo = function () {
+  this.size(function (err, size) {
+    console.log('Key: ' + this.key);
+    console.log('Client: ' + this.client);
+    console.log('Size: ' + size);
+  });
 };
-
 
 Queue.prototype.push = function (data) {
   this.client.lpush(this.key, data);
 };
 
-
 Queue.prototype.pop = function (callback) {
   this.client.brpop(this.key, this.timeout, callback);
 };
-
 
 Queue.prototype.size = function (callback) {
   this.client.llen(this.key, callback);
 };
 
-
 Queue.prototype.runTasks = function () {
 
   var self = this;
 
-  this.pop(function (err, replies) {
+  self.pop(function (err, replies) {
     if (err) throw new Error(err);
 
     var host = os.hostname();
+    var time = Date.now();
     var task = replies[1];
-    var key = 'jobs:' + host;
 
-    self.client.lpush(key, Date.now() + ':' + task);
+    var doneKey = self.key + ':done';
+    var doneHostKey = self.key + ':' + host;
+
+    self.client.sadd(doneKey, task);
+    self.client.sadd(doneHostKey, task);
+
+    console.log('[OK]', task);
     self.runTasks();
   });
 
 }
 
-
-Queue.prototype.createTasks = function (jobName, numberOfTasks) {
-  
-  for (var i = 0; i < numberOfTasks; i++) {
-    this.push(jobName + ':' + i);
-  }
-  this.client.quit();
-
-};
-
 module.exports = Queue;
-
